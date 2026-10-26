@@ -19,7 +19,7 @@ public class ProdottoDto {
     private String descrizioneEstesa;
     private String immagine;
 
-    private int disponibilita;
+    private Integer disponibilita;
 
     private BigDecimal prezzo;
 }
