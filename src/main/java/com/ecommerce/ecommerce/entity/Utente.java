@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "UTENTE")
@@ -40,9 +41,9 @@ public class Utente {
     private Ruolo ruolo;
 
     @Column(name = "DATA_CREAZIONE", nullable = false, updatable = false)
-    private LocalDateTime dataCreazione;
+    private Date dataCreazione;
 
     @Column(name = "DATA_ULTIMA_MODIFICA")
-    private LocalDateTime dataUltimaModifica;
+    private Date dataUltimaModifica;
 
 }

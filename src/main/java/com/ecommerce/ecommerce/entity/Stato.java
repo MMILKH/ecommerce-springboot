@@ -18,7 +18,8 @@ public class Stato {
 
     @Column(name = "NOME", nullable = false, length = 50)
     private String nome;
-
+    @Column(name = "CODICE", length = 255)
+    private String codice;
     @Column(name = "DESCRIZIONE", length = 255)
     private String descrizione;
 }

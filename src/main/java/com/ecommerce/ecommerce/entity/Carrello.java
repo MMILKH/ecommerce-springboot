@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "CARRELLO")
@@ -25,9 +26,9 @@ public class Carrello {
     private String stato;
 
     @Column(name = "DATA_CREAZIONE", nullable = false, updatable = false)
-    private LocalDateTime dataCreazione;
+    private Date dataCreazione;
 
     @Column(name = "ULTIMO_AGGIORNAMENTO")
-    private LocalDateTime ultimoAggiornamento;
+    private Date ultimoAggiornamento;
 
 }
