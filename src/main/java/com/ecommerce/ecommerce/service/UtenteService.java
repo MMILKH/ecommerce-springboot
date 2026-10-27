@@ -5,11 +5,11 @@ import com.ecommerce.ecommerce.dto.RegisterRequest;
 import com.ecommerce.ecommerce.dto.UtenteDto;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public interface UtenteService {
-    String autentica(LoginRequest requestLogin);
-    String registra(RegisterRequest utente) throws Exception;
-    List<UtenteDto> getUsers(String nome, String cognome, String email, String numero, Date inizio, Date fine);
+    String login(LoginRequest requestLogin);
+    String register(RegisterRequest utente) throws Exception;
+    List<UtenteDto> getUsers(String nome, String cognome, String email, String numero, LocalDate inizio, LocalDate fine);
 }

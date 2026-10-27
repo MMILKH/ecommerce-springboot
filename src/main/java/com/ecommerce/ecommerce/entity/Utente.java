@@ -41,9 +41,9 @@ public class Utente {
     private Ruolo ruolo;
 
     @Column(name = "DATA_CREAZIONE", nullable = false, updatable = false)
-    private Date dataCreazione;
+    private LocalDateTime dataCreazione;
 
     @Column(name = "DATA_ULTIMA_MODIFICA")
-    private Date dataUltimaModifica;
+    private LocalDateTime dataUltimaModifica;
 
 }

@@ -22,7 +22,7 @@ public class ProdottiController {
 
 
     @GetMapping("/catalog")
-    public ResponseEntity<List<ProdottoDto>> getCatalogo(@RequestParam(required = false) String categoria) {
+    public ResponseEntity<List<ProdottoDto>> getCatalog(@RequestParam(required = false) String categoria) {
         List<ProdottoDto> prodotti = prodottoService.findProducts(categoria);
         return ResponseEntity.ok(prodotti);
     }

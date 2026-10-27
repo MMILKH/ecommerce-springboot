@@ -3,6 +3,7 @@ import com.ecommerce.ecommerce.dto.ProdottoDto;
 import com.ecommerce.ecommerce.entity.Prodotto;
 import com.ecommerce.ecommerce.repository.ProdottoRepository;
 import com.ecommerce.ecommerce.service.ProdottoService;
+import com.ecommerce.ecommerce.specification.ProdottoSpecifications;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,25 +39,15 @@ public class ProdottoServiceImpl implements ProdottoService {
     }
 
     public List<ProdottoDto> findProducts(String categoria) {
-        List<Prodotto> products;
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Prodotto> cq = cb.createQuery(Prodotto.class);
-        Root<Prodotto> root = cq.from(Prodotto.class);
-
+        List<Prodotto> prodotti;
         if (categoria != null && !categoria.isBlank()) {
-            Predicate predicateCategoria = cb.equal(root.get("categoria"),categoria);
-            cq.select(root).where(predicateCategoria);
+            Specification<Prodotto> spec = ProdottoSpecifications.containsCat(categoria);
+            prodotti = prodottoRepository.findAll(spec);
+        } else {
+            prodotti = prodottoRepository.findAll();
         }
-        else{
-            cq.select(root);
-        }
-
-        products = entityManager.createQuery(cq).getResultList();
-        return products.stream()
-                .map(prodotto -> modelMapper.map(prodotto, ProdottoDto.class))
+        return prodotti.stream()
+                .map(p -> modelMapper.map(p, ProdottoDto.class))
                 .toList();
     }
-
-
-
 }

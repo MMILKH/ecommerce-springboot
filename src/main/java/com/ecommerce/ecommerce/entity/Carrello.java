@@ -2,6 +2,8 @@ package com.ecommerce.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -26,9 +28,9 @@ public class Carrello {
     private String stato;
 
     @Column(name = "DATA_CREAZIONE", nullable = false, updatable = false)
-    private Date dataCreazione;
+    private LocalDateTime dataCreazione;
 
     @Column(name = "ULTIMO_AGGIORNAMENTO")
-    private Date ultimoAggiornamento;
+    private LocalDateTime ultimoAggiornamento;
 
 }

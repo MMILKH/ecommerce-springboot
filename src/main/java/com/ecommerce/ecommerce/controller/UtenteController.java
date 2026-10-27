@@ -1,11 +1,9 @@
 package com.ecommerce.ecommerce.controller;
 
+import com.ecommerce.ecommerce.dto.LoginRequest;
 import com.ecommerce.ecommerce.dto.RegisterRequest;
 import com.ecommerce.ecommerce.dto.UtenteDto;
-import com.ecommerce.ecommerce.entity.Utente;
 import com.ecommerce.ecommerce.service.impl.UtenteServiceImpl;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,13 +24,13 @@ public class UtenteController {
 
 
     @GetMapping("/admin")
-    public ResponseEntity<List<UtenteDto>> searchUtentiAdmin(
+    public ResponseEntity<List<UtenteDto>> searchUserAdmin(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String cognome,
             @RequestParam(required = false) String numero,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataInizio,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataFine) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInizio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFine){
 
         List<UtenteDto> utenti = utenteServiceImpl.getUsers(nome, cognome, email, numero, dataInizio, dataFine);
         return ResponseEntity.ok(utenti);
@@ -40,12 +38,23 @@ public class UtenteController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest dto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        String esito = utenteServiceImpl.registra(dto);
+        String esito = utenteServiceImpl.register(dto);
         if ("ok".equals(esito)) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Utente registrato con successo!");
         } else {
             return ResponseEntity.badRequest().body(esito);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest dto) {
+        String esito = utenteServiceImpl.login(dto);
+        if ("ok".equals(esito)) {
+            return ResponseEntity.ok().body("Utente loggato con successo!");
+        } else{
+            return ResponseEntity.badRequest().body(esito);
+        }
+
     }
 
 
