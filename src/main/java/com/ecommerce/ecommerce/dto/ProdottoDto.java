@@ -14,12 +14,10 @@ public class ProdottoDto {
 
     private Integer id;
     private String nome;
-
     private String descrizioneBreve;
     private String descrizioneEstesa;
     private String immagine;
-
     private Integer disponibilita;
-
     private BigDecimal prezzo;
+
 }

@@ -10,4 +10,7 @@ public interface CarrelloRepository extends JpaRepository<Carrello, Integer> {
     Carrello findByUtenteIdAndStato(int utenteId, String stato);
 
     Carrello findById(int id);
+    boolean existsById(int id);
+
+    Carrello findByIdAndStato(Integer id, String aNew);
 }

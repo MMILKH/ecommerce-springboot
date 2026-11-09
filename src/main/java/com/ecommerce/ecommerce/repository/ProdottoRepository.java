@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface ProdottoRepository extends JpaRepository<Prodotto, Integer>, JpaSpecificationExecutor<Prodotto> {
 
-    List<Prodotto> findAllByCategoria(String categoria);
     Prodotto findById(int id);
 }
 

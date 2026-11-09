@@ -12,17 +12,19 @@ public interface CarrelloService {
 
     CarrelloDto getActiveCart(int utenteId);
 
-    String addFromCatalog(RigaCarrelloDto rigaCarrelloDto);
+    RigaCarrelloDto addFromCatalog(RigaCarrelloDto rigaCarrelloDto,int cartId);
 
-    BigDecimal getTotal(int carrelloId);
+//    BigDecimal getTotal(int carrelloId);
 
     List<RigaCarrelloDto> getRowByCartId(int carrelloId);
+
+    RigaCarrelloDto getRowByCartIdAndProductsId(int cartId,int prodottoId);
 
     RigaCarrelloDto updateRowQuantity(int rigaId, int nuovaQuantita);
 
     void deleteRow(int rigaId);
 
-    int countElements(int utenteId);
+//    int countElements(int utenteId);
 
     boolean existRiga(int rigaId);
 

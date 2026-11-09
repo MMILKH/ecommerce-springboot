@@ -24,19 +24,17 @@ public class ProdottoServiceImpl implements ProdottoService {
     private ProdottoRepository prodottoRepository;
     @Autowired
     private ModelMapper modelMapper;
-    @PersistenceContext
-    private EntityManager entityManager;
 
 
-    @Override
-    public List<ProdottoDto> showAll() {
-        List<Prodotto> prodotti = prodottoRepository.findAll();
-        List<ProdottoDto> prodottiDto = new ArrayList<>();
-        for (Prodotto prodotto : prodotti) {
-            prodottiDto.add(modelMapper.map(prodotto, ProdottoDto.class));
-        }
-        return prodottiDto;
-    }
+//    @Override
+//    public List<ProdottoDto> showAll() {
+//        List<Prodotto> prodotti = prodottoRepository.findAll();
+//        List<ProdottoDto> prodottiDto = new ArrayList<>();
+//        for (Prodotto prodotto : prodotti) {
+//            prodottiDto.add(modelMapper.map(prodotto, ProdottoDto.class));
+//        }
+//        return prodottiDto;
+//    }
 
     public List<ProdottoDto> findProducts(String categoria) {
         List<Prodotto> prodotti;

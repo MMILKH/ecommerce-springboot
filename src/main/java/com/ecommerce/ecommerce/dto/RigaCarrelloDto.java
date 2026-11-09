@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RigaCarrelloDto {
-
+    private Integer id;
     private ProdottoDto prodotto;
     private Integer quantita;
-    private CarrelloDto carrello;
 
 }

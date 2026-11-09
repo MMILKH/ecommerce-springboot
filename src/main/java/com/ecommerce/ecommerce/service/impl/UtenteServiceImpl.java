@@ -50,17 +50,15 @@ public class UtenteServiceImpl implements UtenteService {
 
 
     @Override
-    @Transactional(readOnly = true)
-    public String login(LoginRequest requestLogin) {
+    public UtenteDto login(LoginRequest requestLogin) throws  UnsupportedEncodingException, NoSuchAlgorithmException {
 
         if (requestLogin == null || requestLogin.getEmail() == null || requestLogin.getPassword() == null) {
-            return "campi non compilati correttamente";
+            throw new IllegalArgumentException("Campo/i non valido/i");
         }
         Utente utente = utenteRepository.findByEmail(requestLogin.getEmail());
         if (utente == null) {
-            return "email non esistente";
+            throw new IllegalArgumentException("Email non esistente");
         }
-        try {
             String hashPassword = Password.getHash(requestLogin.getPassword());
             if (hashPassword.equals(utente.getPasswordu())) {
                 Carrello c = carrelloRepository.findByUtenteIdAndStato(utente.getId(), "NEW");
@@ -72,32 +70,36 @@ public class UtenteServiceImpl implements UtenteService {
                     c.setDataCreazione(LocalDateTime.now());
                     carrelloRepository.save(c);
                 }
-                return "ok";
+                return modelMapper.map(utente, UtenteDto.class);
             }else{
-                return "Password errata";
+                throw new IllegalArgumentException("Password non corretta");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       return "Errore";
     }
 
     @Override
     @Transactional
-    public String register(RegisterRequest dto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void register(RegisterRequest dto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        if (dto.getPassword() == null || dto.getPassword().isEmpty() ||
+                dto.getEmail() == null || dto.getEmail().isEmpty()
+                || dto.getNome() == null || dto.getNome().isEmpty()
+                || dto.getCognome() == null || dto.getCognome().isEmpty()
+                || dto.getNumero() == null || dto.getNumero().isEmpty()
+                || dto.getPasswordConf() == null || dto.getPasswordConf().isEmpty())
+        {
+            throw new IllegalArgumentException("Campo/i non valido/i");
+
+        }
 
         if (!dto.getPassword().equals(dto.getPasswordConf())) {
-            return "Le password non coincidono.";
+            throw new IllegalArgumentException("Le password non coincidono");
         }
 
         if (utenteRepository.findByEmail(dto.getEmail()) != null) {
-            return "Email già registrata nel sistema.";
+            throw new IllegalArgumentException("Email già registrata nel sistema");
         }
 
         Ruolo ruolo = ruoloRepository.findByNome("customer");
-        if (ruolo == null) {
-            return "Errore: Ruolo CUSTOMER non trovato nel DB.";
-        }
 
 
         Utente utente = new Utente();
@@ -110,20 +112,23 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setDataCreazione(LocalDateTime.now());
         utente.setDataUltimaModifica(LocalDateTime.now());
         String passwordHash = Password.getHash(dto.getPassword());
-         utente.setPasswordu(passwordHash);
-        utente.setPasswordu(dto.getPassword());
-
-        Utente utenteSalvato = utenteRepository.save(utente);
-
+        utente.setPasswordu(passwordHash);
+        Utente utenteSalvato=new Utente();
+        try {
+            utenteSalvato = utenteRepository.save(utente);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Carrello c = new Carrello();
         c.setUtente(utenteSalvato);
         c.setStato("NEW");
         c.setDataCreazione(LocalDateTime.now());
         c.setUltimoAggiornamento(LocalDateTime.now());
-
-        carrelloRepository.save(c);
-
-        return "ok";
+        try {
+            carrelloRepository.save(c);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

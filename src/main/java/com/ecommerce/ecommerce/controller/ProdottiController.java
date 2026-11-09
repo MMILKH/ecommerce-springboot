@@ -15,7 +15,8 @@ import com.ecommerce.ecommerce.service.ProdottoService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/products")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/products")
 public class ProdottiController {
     @Autowired
     private ProdottoService prodottoService;

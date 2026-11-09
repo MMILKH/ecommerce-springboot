@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProdottoService {
 
-    List<ProdottoDto> showAll();
+//    List<ProdottoDto> showAll();
 
     List<ProdottoDto> findProducts(String categoria);
 
