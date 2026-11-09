@@ -1,0 +1,31 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/user/register
+method: POST
+queryParams:
+  - key: email
+    value: mario@gmail.com
+    disabled: true
+    description: ""
+  - key: cognome
+    value: rossi
+    disabled: true
+    description: ""
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"test07@gmail.com\",\r
+
+    \  \"nome\": \"test_4\",\r
+
+    \  \"cognome\": \"test_3\",\r
+
+    \  \"password\":\"123456\",\r
+
+    \  \"passwordConf\":\"123456\",\r
+
+    \  \"numero\":\"4324324324\"\r
+
+    }"
+order: 2000

@@ -1,0 +1,23 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/order/4011/checkout
+method: POST
+queryParams:
+  - key: email
+    value: mario@gmail.com
+    disabled: true
+    description: ""
+  - key: cognome
+    value: rossi
+    disabled: true
+    description: ""
+body:
+  type: json
+  content: "{\r
+
+    \  \"indirizzoSpedizione\": \"Via Roma 3, 00100 Roma (RM)\",\r
+
+    \  \"indirizzoFatturazione\": \"Via Milano 45, 20100 Milano (MI)\"\r
+
+    }"
+order: 3000

@@ -1,0 +1,7 @@
+$kind: http-request
+url: http://localhost:8080/cart/4014
+method: PATCH
+body:
+  type: json
+  content: "{\r\n    \"quantita\": 5\r\n}"
+order: 7000

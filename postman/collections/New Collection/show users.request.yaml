@@ -1,0 +1,25 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/user/admin?cognome=oss&dataInizio=2026-10-26&dataFine=2026-10-26
+method: GET
+queryParams:
+  - key: cognome
+    value: oss
+    disabled: false
+    description: ""
+  - key: dataInizio
+    value: 2026-10-26
+    disabled: false
+    description: ""
+  - key: dataFine
+    value: 2026-10-26
+    disabled: false
+    description: ""
+  - key: email
+    value: mario.rossi@email.com
+    disabled: true
+    description: ""
+body:
+  type: json
+  content: ""
+order: 1000
