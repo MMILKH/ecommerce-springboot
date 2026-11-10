@@ -1,6 +1,7 @@
 package com.ecommerce.ecommerce.service.impl;
 
 
+import com.ecommerce.ecommerce.dto.JwtResponse;
 import com.ecommerce.ecommerce.dto.LoginRequest;
 import com.ecommerce.ecommerce.dto.RegisterRequest;
 import com.ecommerce.ecommerce.dto.UtenteDto;
@@ -8,9 +9,11 @@ import com.ecommerce.ecommerce.entity.*;
 import com.ecommerce.ecommerce.repository.CarrelloRepository;
 import com.ecommerce.ecommerce.repository.RuoloRepository;
 import com.ecommerce.ecommerce.repository.UtenteRepository;
+import com.ecommerce.ecommerce.service.JwtService;
 import com.ecommerce.ecommerce.service.UtenteService;
 import com.ecommerce.ecommerce.specification.UtenteSpecifications;
 import com.ecommerce.ecommerce.util.Password;
+import io.jsonwebtoken.Jwt;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -20,6 +23,9 @@ import jakarta.persistence.criteria.Root;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,33 +53,42 @@ public class UtenteServiceImpl implements UtenteService {
     @PersistenceContext
     EntityManager em;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
 
 
     @Override
-    public UtenteDto login(LoginRequest requestLogin) throws  UnsupportedEncodingException, NoSuchAlgorithmException {
+    public JwtResponse login(LoginRequest requestLogin) {
 
         if (requestLogin == null || requestLogin.getEmail() == null || requestLogin.getPassword() == null) {
             throw new IllegalArgumentException("Campo/i non valido/i");
         }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        requestLogin.getEmail(),
+                        requestLogin.getPassword()
+                )
+        );
         Utente utente = utenteRepository.findByEmail(requestLogin.getEmail());
         if (utente == null) {
             throw new IllegalArgumentException("Email non esistente");
         }
-            String hashPassword = Password.getHash(requestLogin.getPassword());
-            if (hashPassword.equals(utente.getPasswordu())) {
-                Carrello c = carrelloRepository.findByUtenteIdAndStato(utente.getId(), "NEW");
-                if (c == null) {
-                    c = new Carrello();
-                    c.setUtente(utente);
-                    c.setStato("NEW");
-                    c.setUltimoAggiornamento(LocalDateTime.now());
-                    c.setDataCreazione(LocalDateTime.now());
-                    carrelloRepository.save(c);
-                }
-                return modelMapper.map(utente, UtenteDto.class);
-            }else{
-                throw new IllegalArgumentException("Password non corretta");
-            }
+        Carrello c = carrelloRepository.findByUtenteIdAndStato(utente.getId(), "NEW");
+        if (c == null) {
+            c = new Carrello();
+            c.setUtente(utente);
+            c.setStato("NEW");
+            c.setUltimoAggiornamento(LocalDateTime.now());
+            c.setDataCreazione(LocalDateTime.now());
+            carrelloRepository.save(c);
+        }
+        String tokenJwt = jwtService.generateToken(utente);
+        UtenteDto utenteDto = modelMapper.map(utente, UtenteDto.class);
+        return new JwtResponse(tokenJwt, utenteDto);
     }
 
     @Override
@@ -111,7 +126,7 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setIndirizzo(dto.getIndirizzo());
         utente.setDataCreazione(LocalDateTime.now());
         utente.setDataUltimaModifica(LocalDateTime.now());
-        String passwordHash = Password.getHash(dto.getPassword());
+        String passwordHash = passwordEncoder.encode(dto.getPassword());
         utente.setPasswordu(passwordHash);
         Utente utenteSalvato=new Utente();
         try {

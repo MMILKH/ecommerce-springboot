@@ -18,6 +18,5 @@ public class UtenteDto {
     @NotBlank(message = "il numero è obbligatorio")
     private String numero;
     private String indirizzo;
-    private int id;
     private RuoloDto ruolo;
 }
