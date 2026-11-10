@@ -2,19 +2,12 @@ package com.ecommerce.ecommerce.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.apache.coyote.BadRequestException;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,15 +16,17 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private final PrivateKey privateKey;
-    private final PublicKey publicKey;
+    private final RSAPrivateKey privateKey;
+    private final RSAPublicKey publicKey;
+    private final long jwtExpiration;
 
-    private final long jwtExpiration = 86400000;
-
-    public JwtService() throws Exception {
-
-        this.privateKey = getPrivateKey();
-        this.publicKey = getPublicKey();
+    public JwtService(
+            @Value("${jwt.private-key-path:classpath:keys/newKey/private_key.pem}") RSAPrivateKey privateKey,
+            @Value("${jwt.public-key-path:classpath:keys/newKey/public_key.pem}") RSAPublicKey publicKey,
+            @Value("${jwt.expiration-ms:86400000}") long jwtExpiration) {
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+        this.jwtExpiration = jwtExpiration;
     }
 
 
@@ -101,30 +96,5 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-
-
-    private PrivateKey getPrivateKey() throws Exception {
-        InputStream is = new ClassPathResource("keys/newKey/private_key.pem").getInputStream();
-        String privateKeyPem = new String(is.readAllBytes(), StandardCharsets.UTF_8)
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "")
-                .replaceAll("\\s+", "");
-
-        byte[] encoded = Base64.getDecoder().decode(privateKeyPem);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
-        return KeyFactory.getInstance("RSA").generatePrivate(keySpec);
-    }
-
-    private PublicKey getPublicKey() throws Exception {
-        InputStream is = new ClassPathResource("keys/newKey/public_key.pem").getInputStream();
-        String pem = new String(is.readAllBytes(), StandardCharsets.UTF_8)
-                .replace("-----BEGIN PUBLIC KEY-----", "")
-                .replace("-----END PUBLIC KEY-----", "")
-                .replaceAll("\\s+", "");
-
-        byte[] encoded = Base64.getDecoder().decode(pem);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
-        return KeyFactory.getInstance("RSA").generatePublic(keySpec);
-    }
 
 }

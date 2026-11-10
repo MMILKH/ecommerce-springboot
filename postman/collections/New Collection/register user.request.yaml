@@ -1,6 +1,6 @@
 $kind: http-request
 description: ""
-url: http://localhost:8080/user/register
+url: http://localhost:8080/api/user/register
 method: POST
 queryParams:
   - key: email
@@ -15,17 +15,19 @@ body:
   type: json
   content: "{\r
 
-    \  \"email\": \"test07@gmail.com\",\r
+    \  \"nome\": \"luigi\",\r
 
-    \  \"nome\": \"test_4\",\r
+    \  \"cognome\": \"bianchi\",\r
 
-    \  \"cognome\": \"test_3\",\r
+    \  \"email\": \"luigi.bianchi@example.com\",\r
 
-    \  \"password\":\"123456\",\r
+    \  \"password\": \"Pass123\",\r
 
-    \  \"passwordConf\":\"123456\",\r
+    \  \"passwordConf\": \"Pass123\",\r
 
-    \  \"numero\":\"4324324324\"\r
+    \  \"numero\": \"3331234567\",\r
 
-    }"
+    \  \"indirizzo\": \"Via Roma 10, Milano\"\r
+
+    }\r\n"
 order: 2000
