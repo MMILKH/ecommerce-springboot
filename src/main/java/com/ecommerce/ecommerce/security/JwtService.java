@@ -1,4 +1,4 @@
-package com.ecommerce.ecommerce.service;
+package com.ecommerce.ecommerce.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -84,7 +84,6 @@ public class JwtService {
         if (claims.getExpiration() != null && claims.getExpiration().before(new Date())) {
             throw new IllegalArgumentException("Token JWT scaduto");
         }
-
         return claims;
     }
 

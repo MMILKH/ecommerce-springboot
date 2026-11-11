@@ -2,6 +2,7 @@ package com.ecommerce.ecommerce.specification;
 
 import com.ecommerce.ecommerce.entity.Utente;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,12 +31,27 @@ public class UtenteSpecifications {
         };
     }
 
+
+    public static Specification<Utente> hasRole(String ruoloNome) {
+        return (root, query, criteriaBuilder) -> {
+            if (!StringUtils.hasText(ruoloNome)) {
+                return criteriaBuilder.conjunction(); 
+            }
+            return criteriaBuilder.equal(
+                    criteriaBuilder.lower(root.get("ruolo").get("nome")),
+                    ruoloNome.toLowerCase()
+            );
+        };
+    }
+
     public static Specification<Utente> hasNumber(String numero) {
         return (root, query, cb) -> {
             if (numero == null || numero.isBlank()) return null;
             return cb.equal(root.get("numero"), numero);
         };
     }
+
+
 
     public static Specification<Utente> isBetweenDates(LocalDate DataInizio, LocalDate DataFine) {
         return (root, query, cb) -> {

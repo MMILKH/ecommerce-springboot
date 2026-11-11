@@ -9,17 +9,11 @@ import com.ecommerce.ecommerce.entity.*;
 import com.ecommerce.ecommerce.repository.CarrelloRepository;
 import com.ecommerce.ecommerce.repository.RuoloRepository;
 import com.ecommerce.ecommerce.repository.UtenteRepository;
-import com.ecommerce.ecommerce.service.JwtService;
+import com.ecommerce.ecommerce.security.JwtService;
 import com.ecommerce.ecommerce.service.UtenteService;
 import com.ecommerce.ecommerce.specification.UtenteSpecifications;
-import com.ecommerce.ecommerce.util.Password;
-import io.jsonwebtoken.Jwt;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,11 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UtenteServiceImpl implements UtenteService {
@@ -147,12 +137,13 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public List<UtenteDto> getUsers(String nome, String cognome, String email, String numero, LocalDate inizio, LocalDate fine) {
+    public List<UtenteDto> getUsers(String nome, String cognome, String email, String numero, LocalDate inizio, LocalDate fine,String ruolo) {
 
         Specification<Utente> spec = Specification
                 .where(UtenteSpecifications.containsName(nome))
                 .and(UtenteSpecifications.containsSurname(cognome))
                 .and(UtenteSpecifications.hasEmail(email))
+                .and(UtenteSpecifications.hasRole(ruolo))
                 .and(UtenteSpecifications.hasNumber(numero))
                 .and(UtenteSpecifications.isBetweenDates(inizio, fine));
         List<Utente> utenti = utenteRepository.findAll(spec);

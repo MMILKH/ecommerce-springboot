@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce API
+  version: 1.0.0
+
+paths:
+  /api/products/catalog:
+    get:
+      operationId: getCatalog
+      parameters:
+        - name: categoria
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProdottoDto'
+
+components:
+  schemas:
+    ProdottoDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        descrizioneBreve:
+          type: string
+        descrizioneEstesa:
+          type: string
+        immagine:
+          type: string
+        disponibilita:
+          type: integer
+          format: int32
+        prezzo:
+          type: number
+          format: double

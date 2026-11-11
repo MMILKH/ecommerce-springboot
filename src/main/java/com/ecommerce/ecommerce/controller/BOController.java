@@ -20,16 +20,17 @@ public class BOController {
     private UtenteService utenteService;
 
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<List<UtenteDto>> searchUserAdmin(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String cognome,
             @RequestParam(required = false) String numero,
+            @RequestParam(required = false) String ruolo,
             @RequestParam(required = false) @Valid @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInizio,
-            @RequestParam(required = false) @Valid@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFine) {
+            @RequestParam(required = false) @Valid@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFine) throws Exception {
 
-        List<UtenteDto> utenti = utenteService.getUsers(nome, cognome, email, numero, dataInizio, dataFine);
+        List<UtenteDto> utenti = utenteService.getUsers(nome, cognome, email, numero, dataInizio, dataFine, ruolo);
         return ResponseEntity.ok(utenti);
     }
 }
