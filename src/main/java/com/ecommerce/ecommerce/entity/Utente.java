@@ -54,14 +54,8 @@ public class Utente implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (ruolo == null) {
-            return List.of();
-        }
 
         String nomeRuolo = ruolo.getNome().toUpperCase();
-        if (!nomeRuolo.startsWith("ROLE_")) {
-            nomeRuolo = "ROLE_" + nomeRuolo;
-        }
         return List.of(new SimpleGrantedAuthority(nomeRuolo));
     }
 

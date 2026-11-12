@@ -1,26 +1,34 @@
 package com.ecommerce.ecommerce.controller;
 
-import com.ecommerce.ecommerce.dto.UtenteDto;
+import com.ecommerce.ecommerce.api.AdminApi;
+import com.ecommerce.ecommerce.api.model.ProdottoDto;
+import com.ecommerce.ecommerce.api.model.UtenteDto;
+import com.ecommerce.ecommerce.service.ProdottoService;
 import com.ecommerce.ecommerce.service.UtenteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/admin")
-public class BOController {
+
+public class BOController implements AdminApi {
 
     @Autowired
     private UtenteService utenteService;
+    @Autowired
+    private ProdottoService prodottoService;
 
 
-    @GetMapping("/user")
+    @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UtenteDto>> searchUserAdmin(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String nome,
@@ -33,4 +41,5 @@ public class BOController {
         List<UtenteDto> utenti = utenteService.getUsers(nome, cognome, email, numero, dataInizio, dataFine, ruolo);
         return ResponseEntity.ok(utenti);
     }
+
 }

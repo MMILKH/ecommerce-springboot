@@ -1,10 +1,11 @@
 package com.ecommerce.ecommerce.service.impl;
 
 
-import com.ecommerce.ecommerce.dto.JwtResponse;
-import com.ecommerce.ecommerce.dto.LoginRequest;
-import com.ecommerce.ecommerce.dto.RegisterRequest;
-import com.ecommerce.ecommerce.dto.UtenteDto;
+
+import com.ecommerce.ecommerce.api.model.JwtResponse;
+import com.ecommerce.ecommerce.api.model.LoginRequest;
+import com.ecommerce.ecommerce.api.model.RegisterRequest;
+import com.ecommerce.ecommerce.api.model.UtenteDto;
 import com.ecommerce.ecommerce.entity.*;
 import com.ecommerce.ecommerce.repository.CarrelloRepository;
 import com.ecommerce.ecommerce.repository.RuoloRepository;
@@ -78,22 +79,23 @@ public class UtenteServiceImpl implements UtenteService {
         }
         String tokenJwt = jwtService.generateToken(utente);
         UtenteDto utenteDto = modelMapper.map(utente, UtenteDto.class);
-        return new JwtResponse(tokenJwt, utenteDto);
+        JwtResponse response = new JwtResponse();
+        response.setToken(tokenJwt);
+        response.setUtente(utenteDto);
+        return response;
     }
 
     @Override
     @Transactional
-    public void register(RegisterRequest dto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public JwtResponse register(RegisterRequest dto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         if (dto.getPassword() == null || dto.getPassword().isEmpty() ||
                 dto.getEmail() == null || dto.getEmail().isEmpty()
                 || dto.getNome() == null || dto.getNome().isEmpty()
                 || dto.getCognome() == null || dto.getCognome().isEmpty()
                 || dto.getNumero() == null || dto.getNumero().isEmpty()
-                || dto.getPasswordConf() == null || dto.getPasswordConf().isEmpty())
-        {
+                || dto.getPasswordConf() == null || dto.getPasswordConf().isEmpty()) {
             throw new IllegalArgumentException("Campo/i non valido/i");
-
         }
 
         if (!dto.getPassword().equals(dto.getPasswordConf())) {
@@ -106,7 +108,6 @@ public class UtenteServiceImpl implements UtenteService {
 
         Ruolo ruolo = ruoloRepository.findByNome("customer");
 
-
         Utente utente = new Utente();
         utente.setRuolo(ruolo);
         utente.setNome(dto.getNome());
@@ -116,24 +117,24 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setIndirizzo(dto.getIndirizzo());
         utente.setDataCreazione(LocalDateTime.now());
         utente.setDataUltimaModifica(LocalDateTime.now());
-        String passwordHash = passwordEncoder.encode(dto.getPassword());
-        utente.setPasswordu(passwordHash);
-        Utente utenteSalvato=new Utente();
-        try {
-            utenteSalvato = utenteRepository.save(utente);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        utente.setPasswordu(passwordEncoder.encode(dto.getPassword()));
+
+        Utente utenteSalvato = utenteRepository.save(utente);
+
         Carrello c = new Carrello();
         c.setUtente(utenteSalvato);
         c.setStato("NEW");
         c.setDataCreazione(LocalDateTime.now());
         c.setUltimoAggiornamento(LocalDateTime.now());
-        try {
-            carrelloRepository.save(c);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        carrelloRepository.save(c);
+
+        String tokenJwt = jwtService.generateToken(utenteSalvato);
+        UtenteDto utenteDto = modelMapper.map(utenteSalvato, UtenteDto.class);
+
+        JwtResponse response = new JwtResponse();
+        response.setToken(tokenJwt);
+        response.setUtente(utenteDto);
+        return response;
     }
 
     @Override

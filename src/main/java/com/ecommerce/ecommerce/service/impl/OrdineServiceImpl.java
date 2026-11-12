@@ -1,7 +1,7 @@
 package com.ecommerce.ecommerce.service.impl;
 
-import com.ecommerce.ecommerce.dto.OrdineDto;
-import com.ecommerce.ecommerce.dto.RigaOrdineDto;
+import com.ecommerce.ecommerce.api.model.OrdineDto;
+import com.ecommerce.ecommerce.api.model.RigaOrdineDto;
 import com.ecommerce.ecommerce.entity.*;
 import com.ecommerce.ecommerce.handler.GlobalExceptionHandler;
 import com.ecommerce.ecommerce.repository.*;

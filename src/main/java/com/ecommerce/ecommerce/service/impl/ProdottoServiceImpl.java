@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.service.impl;
-import com.ecommerce.ecommerce.dto.ProdottoDto;
+
+import com.ecommerce.ecommerce.api.model.ProdottoDto;
 import com.ecommerce.ecommerce.entity.Prodotto;
 import com.ecommerce.ecommerce.repository.ProdottoRepository;
 import com.ecommerce.ecommerce.service.ProdottoService;

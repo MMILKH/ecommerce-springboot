@@ -1,7 +1,7 @@
 package com.ecommerce.ecommerce.service.impl;
 
-import com.ecommerce.ecommerce.dto.CarrelloDto;
-import com.ecommerce.ecommerce.dto.RigaCarrelloDto;
+import com.ecommerce.ecommerce.api.model.CarrelloDto;
+import com.ecommerce.ecommerce.api.model.RigaCarrelloDto;
 import com.ecommerce.ecommerce.entity.Carrello;
 import com.ecommerce.ecommerce.entity.Prodotto;
 import com.ecommerce.ecommerce.entity.RigaCarrello;

@@ -1,7 +1,7 @@
 package com.ecommerce.ecommerce.service;
 
-import com.ecommerce.ecommerce.dto.CarrelloDto;
-import com.ecommerce.ecommerce.dto.RigaCarrelloDto;
+import com.ecommerce.ecommerce.api.model.CarrelloDto;
+import com.ecommerce.ecommerce.api.model.RigaCarrelloDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

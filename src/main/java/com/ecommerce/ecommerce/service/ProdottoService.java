@@ -1,6 +1,8 @@
 package com.ecommerce.ecommerce.service;
 
-import com.ecommerce.ecommerce.dto.ProdottoDto;
+
+
+import com.ecommerce.ecommerce.api.model.ProdottoDto;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.ecommerce.ecommerce.service;
 
-import com.ecommerce.ecommerce.dto.OrdineDto;
+import com.ecommerce.ecommerce.api.model.OrdineDto;
 import com.ecommerce.ecommerce.dto.RigaOrdineDto;
 import org.springframework.stereotype.Service;
 

@@ -17,6 +17,6 @@ public class RigaOrdineDto {
     private LocalDateTime dataCreazione;
     private Integer rigaCarrelloId;
     private Integer quantita;
-    private Prodotto prodotto;
-    private Carrello carrello;
+    private ProdottoDto prodotto;
+    private CarrelloDto carrello;
 }

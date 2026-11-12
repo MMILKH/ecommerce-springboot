@@ -1,21 +1,24 @@
 package com.ecommerce.ecommerce.controller;
 
-import com.ecommerce.ecommerce.dto.OrdineDto;
+import com.ecommerce.ecommerce.api.CartsApi;
+import com.ecommerce.ecommerce.api.OrdersApi;
+import com.ecommerce.ecommerce.api.model.OrdineDto;
 import com.ecommerce.ecommerce.service.OrdineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/order")
 @CrossOrigin(origins = "http://localhost:4200")
-public class OrdineController {
+public class OrdineController implements OrdersApi {
     @Autowired
     private OrdineService ordineService;
-    @PostMapping("/{userId}/checkout")
-    public ResponseEntity<OrdineDto> checkout(@RequestBody OrdineDto ordine,@PathVariable int userId) {
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<OrdineDto> checkout(Integer userId,OrdineDto ordine) {
         OrdineDto response = ordineService.createOrder(ordine,userId);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
