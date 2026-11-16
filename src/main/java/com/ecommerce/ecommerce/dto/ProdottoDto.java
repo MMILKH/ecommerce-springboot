@@ -20,4 +20,5 @@ public class ProdottoDto {
     private Integer disponibilita;
     private BigDecimal prezzo;
 
+
 }

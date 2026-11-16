@@ -152,4 +152,27 @@ public class UtenteServiceImpl implements UtenteService {
                 .map(u -> modelMapper.map(u, UtenteDto.class))
                 .toList();
     }
+
+    @Override
+    public UtenteDto updateUser(int id, UtenteDto utenteDto) throws Exception {
+        Utente utenteEsistente = utenteRepository.findById(id);
+        utenteEsistente.setNome(utenteDto.getNome());
+        utenteEsistente.setCognome(utenteDto.getCognome());
+        utenteEsistente.setEmail(utenteDto.getEmail());
+        Ruolo ruolo = ruoloRepository.findByNome(utenteDto.getRuolo().getNome());
+        utenteEsistente.setRuolo(ruolo);
+        utenteEsistente.setDataUltimaModifica(LocalDateTime.now());
+        utenteRepository.save(utenteEsistente);
+        return modelMapper.map(utenteEsistente, UtenteDto.class);
+    }
+
+    @Override
+    public void deleteUser(int id) throws Exception {
+        Utente utenteEsistente = utenteRepository.findById(id);
+        if (utenteEsistente != null) {
+            utenteRepository.deleteById(id);
+        }
+    }
+
+
 }

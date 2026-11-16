@@ -16,4 +16,6 @@ public interface UtenteService {
     JwtResponse login(LoginRequest requestLogin) throws Exception;
     JwtResponse register(RegisterRequest utente) throws Exception;
     List<UtenteDto> getUsers(String nome, String cognome, String email, String numero, LocalDate inizio, LocalDate fine,String ruolo) throws Exception;
+    UtenteDto updateUser(int id,UtenteDto utenteDto) throws Exception;
+    void deleteUser(int id) throws Exception;
 }

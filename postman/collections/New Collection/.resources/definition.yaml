@@ -1,1 +1,14 @@
 $kind: collection
+variables:
+  - key: jwt_token
+    secret: true
+    disabled: false
+  - key: json_web_token_13uc
+    secret: true
+    disabled: false
+auth:
+  - id: a38daefa-f062-4083-aaf7-650cc85f2578
+    type: bearer
+    name: Bearer Token
+    credentials:
+      token: "{{json_web_token_13uc}}"

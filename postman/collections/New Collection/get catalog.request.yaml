@@ -1,9 +1,6 @@
 $kind: http-request
-url: http://localhost:8080/products/catalog?categoria=abbigliamento
+url: http://localhost:8080/api/products/catalog?categoria=abbigliamento
 method: GET
 queryParams:
-  - key: categoria
-    value: abbigliamento
-    disabled: false
-    description: ""
+  categoria: abbigliamento
 order: 10000

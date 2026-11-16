@@ -11,6 +11,7 @@ public interface RigaCarrelloRepository extends JpaRepository<RigaCarrello, Inte
     RigaCarrello findByCarrelloIdAndProdottoId(int id, int prodottoId);
     RigaCarrello findById(int id);
     List<RigaCarrello> findByCarrelloId(int carrelloId);
+    void deleteByProdottoId(int prodottoId);
 
 
 }

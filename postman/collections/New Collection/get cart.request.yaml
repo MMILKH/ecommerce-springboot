@@ -1,5 +1,5 @@
 $kind: http-request
-url: http://localhost:8080/api/cart/4011
+url: http://localhost:8080/api/cart/4015
 method: GET
 body:
   type: json

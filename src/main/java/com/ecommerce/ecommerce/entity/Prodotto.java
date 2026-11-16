@@ -24,7 +24,7 @@ public class Prodotto {
     private String nome;
 
     @Column(name = "DESCRIZIONEB", length = 255)
-    private String descrizioneb;
+    private String descrizioneBreve;
 
     @Column(name = "DESCRIZIONEE", columnDefinition = "TEXT")
     private String descrizionee;

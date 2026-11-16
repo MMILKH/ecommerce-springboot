@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UtenteRepository extends JpaRepository<Utente,Integer>, JpaSpecificationExecutor<Utente> {
     Utente findByEmail(String email);
+    Utente findById(int id);
+
 }
 

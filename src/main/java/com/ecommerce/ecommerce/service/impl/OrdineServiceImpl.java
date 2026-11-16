@@ -41,7 +41,7 @@ public class OrdineServiceImpl implements OrdineService {
     @Transactional
     public OrdineDto createOrder(OrdineDto dto,int userId) {
 
-        Utente user = utenteRepository.findById(userId).orElse(null);
+        Utente user = utenteRepository.findById(userId);
         if (dto.getIndirizzoSpedizione() == null || dto.getIndirizzoSpedizione().isBlank() || user == null){
             throw new IllegalArgumentException("Campo/i non valido/i");
         }

@@ -1,6 +1,6 @@
 $kind: http-request
 description: ""
-url: http://localhost:8080/order/4011/checkout
+url: http://localhost:8080/api/order/4015/checkout
 method: POST
 queryParams:
   - key: email
