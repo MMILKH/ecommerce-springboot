@@ -20,9 +20,8 @@ public class Carrello {
     @Column(name = "ID")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UTENTE_ID", nullable = false)
-    private Utente utente;
+    @Column(name = "UTENTE_ID", nullable = false, length = 40)
+    private String utente;
 
     @Column(name = "STATO", nullable = false, length = 20)
     private String stato;

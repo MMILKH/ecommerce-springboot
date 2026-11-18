@@ -2,6 +2,9 @@ package com.ecommerce.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,6 +27,7 @@ public class RigaCarrello {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODOTTO_ID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Prodotto prodotto;
 
     @Column(name = "QUANTITA", nullable = false)

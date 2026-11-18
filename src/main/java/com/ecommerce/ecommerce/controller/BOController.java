@@ -1,8 +1,9 @@
 package com.ecommerce.ecommerce.controller;
 
 import com.ecommerce.ecommerce.api.AdminApi;
+import com.ecommerce.ecommerce.api.model.PaginatedResponseContentInner;
 import com.ecommerce.ecommerce.api.model.ProdottoDto;
-import com.ecommerce.ecommerce.api.model.SearchProductsAdmin200Response;
+import com.ecommerce.ecommerce.api.model.PaginatedResponse;
 import com.ecommerce.ecommerce.api.model.UtenteDto;
 import com.ecommerce.ecommerce.service.ProdottoService;
 import com.ecommerce.ecommerce.service.UtenteService;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,32 +42,38 @@ public class BOController implements AdminApi {
 
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteUser(Integer id) throws Exception {
+    public ResponseEntity<Void> deleteUser(String id) throws Exception {
         utenteService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<SearchProductsAdmin200Response> searchProductsAdmin(String nome, String categoria, String descrizioneBreve, String sku, Integer page, Integer elements, String sort) throws Exception {
+    public ResponseEntity<PaginatedResponse> searchProductsAdmin(String nome, String categoria, String descrizioneBreve, String sku, Integer page, Integer elements, String sort) throws Exception {
         int p = (page != null) ? page : 0;
         int e = (elements != null) ? elements : 10;
-        Sort s = Sort.by(Sort.Direction.ASC, "nome");
+        String sortBy = "nome";
+        Sort.Direction direction = Sort.Direction.ASC;
 
         if (sort != null && !sort.isEmpty()) {
-            if (sort.equalsIgnoreCase("desc")) {
-                s = Sort.by(Sort.Direction.DESC, "nome");
+            String[] parts = sort.split(",");
+            sortBy = parts[0].trim();
+
+            if (parts[1].trim().equalsIgnoreCase("desc")) {
+                direction = Sort.Direction.DESC;
             }
         }
 
+        Sort s = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(p,e,s);
         Page<ProdottoDto> paginaCorrente = prodottoService.searchProductsAdmin(nome, categoria, descrizioneBreve, sku,pageable);
-        SearchProductsAdmin200Response response = new SearchProductsAdmin200Response();
-        response.setContent(paginaCorrente.getContent());
+        PaginatedResponse response = new PaginatedResponse();
+
+        List<PaginatedResponseContentInner> paginatedResponseContentInners = new ArrayList<>(paginaCorrente.getContent());
+
+        response.setContent(paginatedResponseContentInners);
         response.setTotalPages(paginaCorrente.getTotalPages());
         response.setTotalElements((int) paginaCorrente.getTotalElements());
-        response.setSize(paginaCorrente.getSize());
-        response.setNumber(paginaCorrente.getNumber());
         return ResponseEntity.ok(response);
     }
 

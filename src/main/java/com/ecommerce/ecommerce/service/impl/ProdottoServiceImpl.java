@@ -49,7 +49,6 @@ public class ProdottoServiceImpl implements ProdottoService {
         Prodotto p = prodottoRepository.findById(id);
 
         if (p != null) {
-            rigaCarrelloRepository.deleteByProdottoId(p.getId());
             prodottoRepository.deleteById(id);
         }else  {
             System.out.println("Prodotto non trovato");

@@ -20,10 +20,8 @@ public class Ordine {
 
     @Column(name = "CODICE", nullable = false, unique = true, length = 50)
     private String codice;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UTENTE_ID", nullable = false)
-    private Utente utente;
+    @Column(name = "UTENTE_ID", nullable = false, length = 40)
+    private String utente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATO_ID", nullable = false)

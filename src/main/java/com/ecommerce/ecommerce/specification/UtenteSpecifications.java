@@ -1,6 +1,5 @@
 package com.ecommerce.ecommerce.specification;
 
-import com.ecommerce.ecommerce.entity.Utente;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 

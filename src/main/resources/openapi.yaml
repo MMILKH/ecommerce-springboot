@@ -28,13 +28,21 @@ components:
           type: number
           format: double
 
-    RuoloDto:
+
+
+    PaginatedResponse:
       type: object
       properties:
-        nome:
-          type: string
-        descrizione:
-          type: string
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        content:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ProdottoDto'
+
 
     UtenteDto:
       type: object
@@ -61,7 +69,7 @@ components:
         indirizzo:
           type: string
         ruolo:
-          $ref: '#/components/schemas/RuoloDto'
+          type: string
 
     JwtResponse:
       type: object
@@ -70,51 +78,6 @@ components:
           type: string
         utente:
           $ref: '#/components/schemas/UtenteDto'
-
-    LoginRequest:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          minLength: 1
-        password:
-          type: string
-          minLength: 1
-
-    RegisterRequest:
-      type: object
-      required:
-        - nome
-        - cognome
-        - email
-        - password
-        - passwordConf
-        - numero
-      properties:
-        nome:
-          type: string
-          minLength: 1
-        cognome:
-          type: string
-          minLength: 1
-        email:
-          type: string
-          format: email
-          minLength: 1
-        password:
-          type: string
-          minLength: 1
-        passwordConf:
-          type: string
-          minLength: 1
-        numero:
-          type: string
-          minLength: 1
-        indirizzo:
-          type: string
 
     StatoDto:
       type: object
@@ -189,8 +152,95 @@ components:
         carrello:
           $ref: '#/components/schemas/CarrelloDto'
 
-
-
+  parameters:
+    #Prodotti
+    NomeProdotto:
+      name: nome
+      in: query
+      required: false
+      schema:
+        type: string
+    Categoria:
+      name: categoria
+      in: query
+      required: false
+      schema:
+        type: string
+    DescrizioneBreve:
+      name: descrizioneBreve
+      in: query
+      required: false
+      schema:
+        type: string
+    Sku:
+      name: sku
+      in: query
+      required: false
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+    Elements:
+      name: elements
+      in: query
+      required: false
+      schema:
+        type: integer
+    Sort:
+      name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+    #Utenti
+    Email:
+      name: email
+      in: query
+      required: false
+      schema:
+        type: string
+    Nome:
+      name: nome
+      in: query
+      required: false
+      schema:
+        type: string
+    Cognome:
+      name: cognome
+      in: query
+      required: false
+      schema:
+        type: string
+    Numero:
+      name: numero
+      in: query
+      required: false
+      schema:
+        type: string
+    Ruolo:
+      name: ruolo
+      in: query
+      required: false
+      schema:
+        type: string
+    DataInizio:
+      name: dataInizio
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+    DataFine:
+      name: dataFine
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
 
 #API
 
@@ -218,89 +268,19 @@ paths:
 
 
 
-  /api/user/register:
-    post:
-      tags:
-        - Users
-      operationId: register
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
-      responses:
-        '201':
-          description: Utente registratocon successo
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JwtResponse'
-
-
-  /api/user/login:
-    post:
-      tags:
-        - Users
-      operationId: login
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-      responses:
-        '200':
-          description: Login effettuato con successo
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JwtResponse'
-
-
   /api/admin/user:
     get:
       tags:
         - Admin
       operationId: searchUserAdmin
       parameters:
-        - name: email
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: nome
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: cognome
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: numero
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: ruolo
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: dataInizio
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: dataFine
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
+        - $ref: '#/components/parameters/Email'
+        - $ref: '#/components/parameters/Nome'
+        - $ref: '#/components/parameters/Cognome'
+        - $ref: '#/components/parameters/Numero'
+        - $ref: '#/components/parameters/Ruolo'
+        - $ref: '#/components/parameters/DataInizio'
+        - $ref: '#/components/parameters/DataFine'
       responses:
         '200':
           description: Lista utenti con diversi filtri
@@ -319,61 +299,20 @@ paths:
         - Admin
       operationId: searchProductsAdmin
       parameters:
-        - name: nome
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: categoria
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: descrizioneBreve
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: sku
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: elements
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: sort
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/NomeProdotto'
+        - $ref: '#/components/parameters/Categoria'
+        - $ref: '#/components/parameters/DescrizioneBreve'
+        - $ref: '#/components/parameters/Sku'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Elements'
+        - $ref: '#/components/parameters/Sort'
       responses:
         '200':
           description: Pagina di prodotti recuperata con successo
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  content:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProdottoDto'
-                  totalPages:
-                    type: integer
-                  totalElements:
-                    type: integer
-                  size:
-                    type: integer
-                  number:
-                    type: integer
+                $ref: '#/components/schemas/PaginatedResponse'
 
 
 
@@ -430,8 +369,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       requestBody:
         required: true
         content:
@@ -455,8 +393,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         '204':
           description: Utente eliminato con successo
@@ -473,8 +410,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         '200':
           description: Carrello attivo dell'utente
@@ -482,6 +418,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarrelloDto'
+
+    post:
+      tags:
+        - Carts
+      operationId: createCart
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrello creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarrelloDto'
+
 
 
 

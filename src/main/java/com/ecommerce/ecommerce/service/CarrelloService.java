@@ -10,7 +10,7 @@ import java.util.List;
 public interface CarrelloService {
 
 
-    CarrelloDto getActiveCart(int utenteId);
+    CarrelloDto getActiveCart(String utenteId);
 
     RigaCarrelloDto addFromCatalog(RigaCarrelloDto rigaCarrelloDto,int cartId);
 
@@ -23,6 +23,8 @@ public interface CarrelloService {
     RigaCarrelloDto updateRowQuantity(int rigaId, int nuovaQuantita);
 
     void deleteRow(int rigaId);
+
+    CarrelloDto createCarrello(String userId);
 
 //    int countElements(int utenteId);
 

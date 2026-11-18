@@ -37,7 +37,7 @@ public class CarrelloServiceImpl implements CarrelloService {
     ModelMapper modelMapper;
 
     @Override
-    public CarrelloDto getActiveCart(int utenteId) {
+    public CarrelloDto getActiveCart(String utenteId) {
         Carrello carrello = carrelloRepository.findByUtenteIdAndStato(utenteId, "NEW");
         if (carrello == null) {
             throw new GlobalExceptionHandler.ResourceNotFoundException("Nessun carrello attivo trovato");
@@ -146,17 +146,24 @@ public class CarrelloServiceImpl implements CarrelloService {
         rigaCarrelloRepository.delete(riga);
     }
 
-//    @Override
-//    public int countElements(int utenteId) {
-//        Carrello carrello = carrelloRepository.findByUtenteIdAndStato(utenteId, "NEW");
-//        List<RigaCarrello> righe ;
-//        righe = rigaCarrelloRepository.findByCarrelloId(carrello.getId());
-//        int totaleElementi= 0;
-//        for (RigaCarrello riga : righe) {
-//            totaleElementi+= riga.getQuantita();
-//        }
-//        return totaleElementi;
-//    }
+    @Override
+    public CarrelloDto createCarrello(String userId) {
+
+
+        Carrello c = carrelloRepository.findByUtenteIdAndStato(userId,"NEW");
+        if (c == null) {
+            c = new Carrello();
+            c.setUtente(userId);
+            c.setStato("NEW");
+            c.setDataCreazione(LocalDateTime.now());
+            c.setUltimoAggiornamento(LocalDateTime.now());
+            carrelloRepository.save(c);
+        }
+
+        return  modelMapper.map(c,CarrelloDto.class);
+    }
+
+
 
     @Override
     public boolean existRiga(int rigaId) {

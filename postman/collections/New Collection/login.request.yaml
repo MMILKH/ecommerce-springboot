@@ -1,13 +1,13 @@
 $kind: http-request
-url: http://localhost:8080/api/user/login
+url: http://localhost:8081/api/user/login
 method: POST
 body:
   type: json
   content: "{\r
 
-    \  \"email\": \"luigi.bianchi@example.com\",\r
+    \ \"email\": \"mario.rossi@test.com\",\r
 
-    \  \"password\": \"Pass123\"\r
+    \  \"password\": \"Password123!\"\r
 
     }"
 order: 8000
