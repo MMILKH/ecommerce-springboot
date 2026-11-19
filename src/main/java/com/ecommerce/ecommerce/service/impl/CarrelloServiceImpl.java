@@ -52,7 +52,7 @@ public class CarrelloServiceImpl implements CarrelloService {
 
     @Override
     public CarrelloDto getActiveCart(String utenteId) {
-        Carrello carrello = carrelloRepository.findByUtenteIdAndStato(utenteId, "NEW");
+        Carrello carrello = carrelloRepository.findByUtenteAndStato(utenteId, "NEW");
         if (carrello == null) {
             throw new GlobalExceptionHandler.ResourceNotFoundException("Nessun carrello attivo trovato");
         }
@@ -171,7 +171,7 @@ public class CarrelloServiceImpl implements CarrelloService {
         if (!Boolean.TRUE.equals(response.getBody())) {
             throw new GlobalExceptionHandler.ResourceNotFoundException("Utente non trovato con UUID: " + userId);
         }
-        Carrello c = carrelloRepository.findByUtenteIdAndStato(userId,"NEW");
+        Carrello c = carrelloRepository.findByUtenteAndStato(userId,"NEW");
         if (c == null) {
             c = new Carrello();
             c.setUtente(userId);

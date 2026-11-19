@@ -53,8 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     List<SimpleGrantedAuthority> authorities = List.of();
 
                     if (ruolo != null && !ruolo.isBlank()) {
-                        String normalizedRole = ruolo.trim().toUpperCase();
-                        authorities = List.of(new SimpleGrantedAuthority(normalizedRole));
+                        String role = ruolo.trim().toUpperCase();
+                        authorities = List.of(new SimpleGrantedAuthority(role));
                     }
 
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

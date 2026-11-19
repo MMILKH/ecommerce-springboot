@@ -43,7 +43,7 @@ public class OrdineServiceImpl implements OrdineService {
         if (dto.getIndirizzoSpedizione() == null || dto.getIndirizzoSpedizione().isBlank()){
             throw new IllegalArgumentException("Campo/i non valido/i");
         }
-        Carrello carrello = carrelloRepository.findByUtenteIdAndStato(userId,"NEW");
+        Carrello carrello = carrelloRepository.findByUtenteAndStato(userId,"NEW");
 
         if(carrello==null){
             throw new IllegalArgumentException("Nessun carrello trovato");

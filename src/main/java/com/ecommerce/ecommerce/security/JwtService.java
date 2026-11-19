@@ -20,8 +20,7 @@ public class JwtService {
 
 
     public JwtService(
-            @Value("${jwt.public-key-path:classpath:keys/newKey/public_key.pem}") RSAPublicKey publicKey,
-            @Value("${jwt.expiration-ms:86400000}") long jwtExpiration) {
+            @Value("${jwt.public-key-path:classpath:keys/newKey/public_key.pem}") RSAPublicKey publicKey) {
 
         this.publicKey = publicKey;
     }

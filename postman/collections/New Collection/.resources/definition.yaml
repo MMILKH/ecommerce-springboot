@@ -6,9 +6,21 @@ variables:
   - key: json_web_token_13uc
     secret: true
     disabled: false
+  - key: json_web_token_0lv0
+    secret: true
+    disabled: false
+  - key: json_web_token_0ojq
+    secret: true
+    disabled: false
+  - key: json_web_token_0dbg
+    secret: true
+    disabled: false
+  - key: json_web_token_0p90
+    secret: true
+    disabled: false
 auth:
   - id: a38daefa-f062-4083-aaf7-650cc85f2578
     type: bearer
     name: Bearer Token
     credentials:
-      token: "{{json_web_token_13uc}}"
+      token: "{{json_web_token_0p90}}"

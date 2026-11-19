@@ -15,19 +15,19 @@ body:
   type: json
   content: "{\r
 
-    \  \"nome\": \"Mario\",\r
+    \  \"nome\": \"wario\",\r
 
-    \  \"cognome\": \"Rossi\",\r
+    \  \"cognome\": \"gialli\",\r
 
-    \  \"email\": \"mario.rossi@test.com\",\r
+    \  \"email\": \"wario.gialli@example.com\",\r
 
-    \  \"password\": \"Password123!\",\r
+    \  \"password\": \"Pass123\",\r
 
-    \  \"passwordConf\": \"Password123!\",\r
+    \  \"passwordConf\": \"Pass123\",\r
 
-    \  \"numero\": \"3331234567\",\r
+    \  \"numero\": \"3331234569\",\r
 
-    \  \"indirizzo\": \"Via Roma 1, Milano\"\r
+    \  \"indirizzo\": \"Via Roma 11, Milano\"\r
 
     }\r\n"
 order: 2000
