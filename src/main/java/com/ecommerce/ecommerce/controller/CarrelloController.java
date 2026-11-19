@@ -27,7 +27,15 @@ public class CarrelloController implements CartsApi {
 
     @Override
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity<CarrelloDto> getCart(Integer userId) {
+    public ResponseEntity<CarrelloDto> createCart(String userId) throws Exception {
+        CarrelloDto carrelloDto;
+        carrelloDto = carrelloService.createCarrello(userId);
+        return ResponseEntity.ok(carrelloDto);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<CarrelloDto> getCart(String userId) {
         CarrelloDto c = carrelloService.getActiveCart(userId);
         List<RigaCarrelloDto> righe = carrelloService.getRowByCartId(c.getId());
         c.setRighe(righe);

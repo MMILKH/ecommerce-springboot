@@ -9,12 +9,20 @@ import com.ecommerce.ecommerce.handler.GlobalExceptionHandler;
 import com.ecommerce.ecommerce.repository.CarrelloRepository;
 import com.ecommerce.ecommerce.repository.ProdottoRepository;
 import com.ecommerce.ecommerce.repository.RigaCarrelloRepository;
-import com.ecommerce.ecommerce.repository.UtenteRepository;
 import com.ecommerce.ecommerce.service.CarrelloService;
+import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,6 +43,12 @@ public class CarrelloServiceImpl implements CarrelloService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    private RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${core-user.base-url:http://localhost:8081}")
+    private String coreUserBaseUrl;
+
 
     @Override
     public CarrelloDto getActiveCart(String utenteId) {
@@ -74,18 +88,7 @@ public class CarrelloServiceImpl implements CarrelloService {
 
     }
 
-//    @Override
-//    public BigDecimal getTotal(int carrelloId) {
-//        List<RigaCarrello> righe ;
-//        righe = rigaCarrelloRepository.findByCarrelloId(carrelloId);
-//        BigDecimal totale = BigDecimal.ZERO;
-//        BigDecimal temp;
-//        for (RigaCarrello r : righe){
-//            temp= r.getProdotto().getPrezzo().multiply(new BigDecimal(r.getQuantita()));
-//            totale = totale.add(temp);
-//        }
-//        return totale;
-//    }
+
 
     @Override
     public List<RigaCarrelloDto> getRowByCartId(int carrelloId) {
@@ -149,7 +152,25 @@ public class CarrelloServiceImpl implements CarrelloService {
     @Override
     public CarrelloDto createCarrello(String userId) {
 
+        String url = coreUserBaseUrl + "/api/user/" + userId;
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        String authorizationHeader = (attrs != null) ? attrs.getRequest().getHeader("Authorization") : null;
+        HttpHeaders headers = new HttpHeaders();
 
+        if (authorizationHeader != null && !authorizationHeader.isBlank()) {
+            headers.set("Authorization", authorizationHeader);
+        }
+
+        ResponseEntity<Boolean> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                Boolean.class
+        );
+
+        if (!Boolean.TRUE.equals(response.getBody())) {
+            throw new GlobalExceptionHandler.ResourceNotFoundException("Utente non trovato con UUID: " + userId);
+        }
         Carrello c = carrelloRepository.findByUtenteIdAndStato(userId,"NEW");
         if (c == null) {
             c = new Carrello();

@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    // Non ci serve più lo UserDetailsService perché non interroghiamo più il DB qui!
+
     public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
@@ -50,7 +50,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtService.isTokenValid(jwt, userEmail)) {
 
                     String ruolo = jwtService.extractClaim(jwt, claims -> claims.get("ruolo", String.class));
-                    List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + ruolo));
+                    List<SimpleGrantedAuthority> authorities = List.of();
+
+                    if (ruolo != null && !ruolo.isBlank()) {
+                        String normalizedRole = ruolo.trim().toUpperCase();
+                        authorities = List.of(new SimpleGrantedAuthority(normalizedRole));
+                    }
 
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userEmail,

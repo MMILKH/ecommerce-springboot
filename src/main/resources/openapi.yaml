@@ -196,51 +196,7 @@ components:
       required: false
       schema:
         type: string
-    #Utenti
-    Email:
-      name: email
-      in: query
-      required: false
-      schema:
-        type: string
-    Nome:
-      name: nome
-      in: query
-      required: false
-      schema:
-        type: string
-    Cognome:
-      name: cognome
-      in: query
-      required: false
-      schema:
-        type: string
-    Numero:
-      name: numero
-      in: query
-      required: false
-      schema:
-        type: string
-    Ruolo:
-      name: ruolo
-      in: query
-      required: false
-      schema:
-        type: string
-    DataInizio:
-      name: dataInizio
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date
-    DataFine:
-      name: dataFine
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date
+
 
 #API
 
@@ -265,32 +221,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProdottoDto'
-
-
-
-  /api/admin/user:
-    get:
-      tags:
-        - Admin
-      operationId: searchUserAdmin
-      parameters:
-        - $ref: '#/components/parameters/Email'
-        - $ref: '#/components/parameters/Nome'
-        - $ref: '#/components/parameters/Cognome'
-        - $ref: '#/components/parameters/Numero'
-        - $ref: '#/components/parameters/Ruolo'
-        - $ref: '#/components/parameters/DataInizio'
-        - $ref: '#/components/parameters/DataFine'
-      responses:
-        '200':
-          description: Lista utenti con diversi filtri
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UtenteDto'
-
 
 
   /api/admin/products:
@@ -356,48 +286,6 @@ paths:
       responses:
         '204':
           description: Prodotto eliminato con successo
-
-
-
-  /api/admin/user/{id}:
-    patch:
-      tags:
-        - Admin
-      operationId: updateUser
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UtenteDto'
-      responses:
-        '200':
-          description: Utente aggiornato con successo
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UtenteDto'
-
-    delete:
-      tags:
-        - Admin
-      operationId: deleteUser
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Utente eliminato con successo
-
 
 
   /api/cart/{userId}:
@@ -522,8 +410,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       requestBody:
         required: true
         content:

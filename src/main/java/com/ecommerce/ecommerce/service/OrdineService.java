@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface OrdineService {
-    OrdineDto createOrder(OrdineDto ordineDto,int userId);
+    OrdineDto createOrder(OrdineDto ordineDto,String  userId);
 
 }

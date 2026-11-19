@@ -18,7 +18,7 @@ public class OrdineController implements OrdersApi {
     private OrdineService ordineService;
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity<OrdineDto> checkout(Integer userId,OrdineDto ordine) {
+    public ResponseEntity<OrdineDto> checkout(String userId,OrdineDto ordine) {
         OrdineDto response = ordineService.createOrder(ordine,userId);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -25,8 +25,6 @@ public class OrdineServiceImpl implements OrdineService {
     @Autowired
     private CarrelloRepository carrelloRepository;
     @Autowired
-    private UtenteRepository utenteRepository;
-    @Autowired
     private RigaCarrelloRepository rigaCarrelloRepository;
     @Autowired
     private StatoRepository statoRepository;
@@ -39,13 +37,13 @@ public class OrdineServiceImpl implements OrdineService {
 
     @Override
     @Transactional
-    public OrdineDto createOrder(OrdineDto dto,int userId) {
+    public OrdineDto createOrder(OrdineDto dto,String userId) {
 
-        Utente user = utenteRepository.findById(userId);
-        if (dto.getIndirizzoSpedizione() == null || dto.getIndirizzoSpedizione().isBlank() || user == null){
+
+        if (dto.getIndirizzoSpedizione() == null || dto.getIndirizzoSpedizione().isBlank()){
             throw new IllegalArgumentException("Campo/i non valido/i");
         }
-        Carrello carrello = carrelloRepository.findByUtenteIdAndStato(user.getId(),"NEW");
+        Carrello carrello = carrelloRepository.findByUtenteIdAndStato(userId,"NEW");
 
         if(carrello==null){
             throw new IllegalArgumentException("Nessun carrello trovato");

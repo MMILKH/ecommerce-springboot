@@ -25,8 +25,7 @@ public class ProdottoServiceImpl implements ProdottoService {
     private ProdottoRepository prodottoRepository;
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private RigaCarrelloRepository rigaCarrelloRepository;
+
 
 
     public List<ProdottoDto> findProducts(String categoria) {

@@ -4,9 +4,7 @@ import com.ecommerce.ecommerce.api.AdminApi;
 import com.ecommerce.ecommerce.api.model.PaginatedResponseContentInner;
 import com.ecommerce.ecommerce.api.model.ProdottoDto;
 import com.ecommerce.ecommerce.api.model.PaginatedResponse;
-import com.ecommerce.ecommerce.api.model.UtenteDto;
 import com.ecommerce.ecommerce.service.ProdottoService;
-import com.ecommerce.ecommerce.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +22,6 @@ import java.util.List;
 
 public class BOController implements AdminApi {
 
-    @Autowired
-    private UtenteService utenteService;
     @Autowired
     private ProdottoService prodottoService;
 
@@ -40,12 +35,6 @@ public class BOController implements AdminApi {
         return ResponseEntity.noContent().build();
     }
 
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteUser(String id) throws Exception {
-        utenteService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
 
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -77,12 +66,6 @@ public class BOController implements AdminApi {
         return ResponseEntity.ok(response);
     }
 
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<UtenteDto>> searchUserAdmin(String email, String nome, String cognome, String numero, String ruolo,LocalDate dataInizio, LocalDate dataFine) throws Exception {
-        List<UtenteDto> utenti = utenteService.getUsers(nome, cognome, email, numero, dataInizio, dataFine, ruolo);
-        return ResponseEntity.ok().body(utenti);
-    }
 
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -91,12 +74,7 @@ public class BOController implements AdminApi {
         return ResponseEntity.ok().body(response);
     }
 
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<UtenteDto> updateUser(Integer id, UtenteDto utenteDto) throws Exception {
-        UtenteDto response = utenteService.updateUser(id, utenteDto);
-        return ResponseEntity.ok().body(response);
-    }
+
 
 
 }
